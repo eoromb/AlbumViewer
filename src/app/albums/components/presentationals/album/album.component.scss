@@ -1,0 +1,21 @@
+@import "~src/styles/base";
+
+.album__container {
+  display: grid;
+  grid-template-rows: repeat(3, minmax(max-content, max-content));
+  border: 1px;
+}
+.album__owner {
+  grid-row: 1;
+}
+.album__title {
+  grid-row: 2;
+}
+.album__cover {
+  grid-row: 3;
+  justify-self: end;
+}
+.album__link {
+    text-decoration: none;
+    color: black;
+}

@@ -1,0 +1,8 @@
+<button class="photo__button" (click)="onClick()">
+  <div class="photo__container">
+    <div class="photo__title header">
+      <p>{{photo?.title}}</p>
+    </div>
+    <img class="photo__thumbnail" [src]="photo?.thumbnailUrl" />
+  </div>
+</button>

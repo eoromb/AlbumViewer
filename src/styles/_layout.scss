@@ -1,0 +1,36 @@
+@import "./variables";
+
+.list__container-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+@mixin layout($columnsCount) {
+  .list__container {
+    display: grid;
+    grid-template-columns: repeat($columnsCount, minmax(150px, 150px));
+    grid-gap: $base-margin;
+    align-items: end;
+  }
+  .list__paginator {
+    grid-column-start: 1;
+    grid-column-end: $columnsCount + 1;
+  }
+}
+@include layout($columnsCount: 11);
+
+@media (max-width: 1024px) {
+    @include layout($columnsCount: 6);
+}
+@media (max-width: 768px) {
+    @include layout($columnsCount: 4);
+}
+@media (max-width: 600px) {
+    @include layout($columnsCount: 3);
+}
+@media (max-width: 460px) {
+    @include layout($columnsCount: 2);
+}

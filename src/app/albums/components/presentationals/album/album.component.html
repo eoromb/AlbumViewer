@@ -1,0 +1,9 @@
+<a class="album__link" routerLink="/albums/{{album?.id}}" >
+  <div class="album__container">
+    <img class="album__cover" [src]="album?.coverImageUrl" />
+    <div class="album__title header">
+      <p>{{album?.title}}</p>
+    </div>
+    <div class="album__owner header">{{album?.ownerName}}</div>
+  </div>
+</a>

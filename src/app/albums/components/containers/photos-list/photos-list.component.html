@@ -1,0 +1,17 @@
+<albvwr-layout>
+  <h2 class="header">Photos</h2>
+  <mat-spinner class="spinner" *ngIf="isPhotosLoading"></mat-spinner>
+  <div>
+    <h3 class="header">{{currentAlbum?.ownerName}}</h3>
+    <h3 class="header">{{currentAlbum?.title}}</h3>
+    <div class="list__container-center">
+      <div class="list__container">
+        <mat-paginator class="list__paginator" [length]="pagination.rowsCount" [pageIndex]="pagination.pageIndex"
+          [pageSize]="pagination.pageSize" [pageSizeOptions]="pagination.pageSizeOptions" (page)="pageEvent($event)">
+        </mat-paginator>
+        <albvwr-photo *ngFor="let photo of photos" [photo]="photo" (photoClicked)="onPhotoClicked($event)">
+        </albvwr-photo>
+      </div>
+    </div>
+  </div>
+</albvwr-layout>
