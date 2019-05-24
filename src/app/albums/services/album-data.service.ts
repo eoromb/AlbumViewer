@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ConfigService } from 'src/app/core/services/config.service';
@@ -46,11 +46,13 @@ export class AlbumDataService {
     if (limit < 1) {
       limit = 1;
     }
-    return this.http.get<Album[]>(`${this.config.getAlbumsUrl()}?${AlbumDataService.createQueryString(page, limit)}`).pipe(
-      map((datas: any[]) => {
-        return datas.map(data => AlbumDataService.createAlbum(data));
-      })
-    );
+    return this.http.get<Album[]>(`${this.config.getAlbumsUrl()}?${AlbumDataService.createQueryString(page, limit)}`,
+      { observe: 'response' }).pipe(
+        map((response: HttpResponse<Album[]>) => {
+          // const total = response.headers.get('x-total-count');
+          return response.body.map(data => AlbumDataService.createAlbum(data));
+        })
+      );
   }
   /**
    * Gets album by id

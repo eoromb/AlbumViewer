@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { of } from 'rxjs';
 import { AlbumDataService } from './album-data.service';
 import { ConfigService } from 'src/app/core/services/config.service';
@@ -18,8 +18,11 @@ describe('AlbumDataService', () => {
     let httpClient: HttpClient;
 
     beforeEach(() => {
+        const headers = new HttpHeaders();
+        headers.set('x-total-count', '100');
+        const httpResponse = new HttpResponse({body: albums, headers});
         configService = jasmine.createSpyObj('ConfigService', { getAlbumsUrl: albumsUrl });
-        httpClient = jasmine.createSpyObj('HttpClient', { get: of(albums) });
+        httpClient = jasmine.createSpyObj('HttpClient', { get: of(httpResponse) });
         service = new AlbumDataService(httpClient, configService);
     });
 
@@ -35,7 +38,7 @@ describe('AlbumDataService', () => {
         const sub = service.getAlbums(page, limit).subscribe(data => {
             expect(data).toEqual(albums);
         });
-        expect(httpClient.get).toHaveBeenCalledWith(`${albumsUrl}?_start=${limit * page}&_limit=${limit}`);
+        expect(httpClient.get).toHaveBeenCalledWith(`${albumsUrl}?_start=${limit * page}&_limit=${limit}`, {observe: 'response'});
         sub.unsubscribe();
     });
     it('shoud call get album by id endpoint', () => {
