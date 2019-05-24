@@ -2,10 +2,10 @@
   <h2 class="header">Albums</h2>
   <mat-spinner class="spinner" *ngIf="isAlbumsLoading"></mat-spinner>
   <div class="list__container-center">
+    <mat-paginator class="list__paginator" [length]="pagination.rowsCount" [pageIndex]="pagination.pageIndex"
+      [pageSize]="pagination.pageSize" [pageSizeOptions]="pagination.pageSizeOptions" (page)="pageEvent($event)">
+    </mat-paginator>
     <div class="list__container">
-      <mat-paginator class="list__paginator" [length]="pagination.rowsCount" [pageIndex]="pagination.pageIndex"
-        [pageSize]="pagination.pageSize" [pageSizeOptions]="pagination.pageSizeOptions" (page)="pageEvent($event)">
-      </mat-paginator>
       <albvwr-album *ngFor="let album of albums" [album]="album">
       </albvwr-album>
     </div>
