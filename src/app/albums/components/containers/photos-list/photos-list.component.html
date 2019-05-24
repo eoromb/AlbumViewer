@@ -1,6 +1,8 @@
 <albvwr-layout>
   <h2 class="header">Photos</h2>
-  <mat-spinner class="spinner" *ngIf="isPhotosLoading"></mat-spinner>
+  <div class="spinner" *ngIf="isPhotosLoading">
+    <mat-spinner></mat-spinner>
+  </div>
   <div>
     <h3 class="header">{{currentAlbum?.ownerName}}</h3>
     <h3 class="header">{{currentAlbum?.title}}</h3>
