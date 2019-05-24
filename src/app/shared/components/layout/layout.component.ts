@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Location } from '@angular/common';
 
 /**
  * Specifies layout of application
@@ -11,8 +10,5 @@ import { Location } from '@angular/common';
 })
 export class LayoutComponent {
 
-  constructor(private location: Location) { }
-  onBackClicked() {
-    this.location.back();
-  }
+  constructor() { }
 }
