@@ -6,8 +6,8 @@ import { PhotosResolver } from './resolvers/photos.resolver';
 import { AlbumsResolver } from './resolvers/albums.resolver';
 
 const routes: Routes = [
-  { path: '', component: AlbumsListComponent, resolve: { data: AlbumsResolver } },
-  { path: ':id', component: PhotosListComponent, resolve: { data: PhotosResolver } }];
+  { path: '', component: AlbumsListComponent, resolve: { data: AlbumsResolver }, runGuardsAndResolvers: 'paramsOrQueryParamsChange' },
+  { path: ':id', component: PhotosListComponent, resolve: { data: PhotosResolver }, runGuardsAndResolvers: 'paramsOrQueryParamsChange' }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

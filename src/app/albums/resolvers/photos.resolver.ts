@@ -3,7 +3,7 @@ import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AlbumState } from '../store/reducers';
 import { LoadPhotosAction } from '../store/actions';
-import { getDefaultPagination } from '../models/pagination.model';
+import { createPagination } from 'src/app/shared/models/pagination.model';
 
 /**
  * Service to resolve list of photos
@@ -19,7 +19,9 @@ export class PhotosResolver implements Resolve<void> {
    */
   resolve(route: ActivatedRouteSnapshot) {
     const id = +route.paramMap.get('id');
-    const pagination = getDefaultPagination();
+    const page = +route.queryParamMap.get('page');
+    const limit = +route.queryParamMap.get('limit');
+    const pagination = createPagination(page - 1, limit);
     // Just send action into store. Does not wait completion of operation.
     this.store.dispatch(new LoadPhotosAction(id, pagination.pageIndex, pagination.pageSize));
   }

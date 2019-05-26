@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, combineLatest, of } from 'rxjs';
-import { withLatestFrom, switchMap, catchError } from 'rxjs/operators';
+import { withLatestFrom, switchMap, catchError, filter } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Actions, ofType, Effect } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
@@ -51,7 +51,7 @@ export class AlbumEffects {
         withLatestFrom(combineLatest(this.store.select(getAlbumsRaw), this.store.select(getUsersRaw), this.store.select(getConfig))),
         switchMap(([action, [albumsRaw, usersRaw, config]]) => {
             const { albumId } = action;
-            const existingAlbum = albumsRaw.find(a => a.id === albumId);
+            const existingAlbum = albumsRaw.items.find(a => a.id === albumId);
             if (albumId === -1) {
                 return of(new SetCurrentAlbumSuccessAction(null));
             }

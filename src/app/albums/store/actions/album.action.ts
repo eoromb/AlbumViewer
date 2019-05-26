@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Album } from '../../models/album.model';
+import { PaginatedList } from 'src/app/shared/models/paginated-list.model';
 
 export enum AlbumActionTypes {
     DO_NOTHING = '[Albums] Do nothing',
@@ -32,7 +33,7 @@ export class LoadAlbumsAction implements Action {
 }
 export class LoadAlbumsSuccessAction implements Action {
     readonly type = AlbumActionTypes.LOAD_ALBUMS_SUCCESS;
-    constructor(public albums: Album[]) {
+    constructor(public albums: PaginatedList<Album>) {
     }
 }
 export class LoadAlbumsFailAction implements Action {

@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { ConfigService } from 'src/app/core/services/config.service';
 import { Photo } from '../models/photo.model';
+import { PaginatedList, createPaginatedList } from 'src/app/shared/models/paginated-list.model';
+import { createPagination, correctPaginationParams } from 'src/app/shared/models/pagination.model';
 
 /**
  * Service to operate wih photo's API
@@ -25,7 +27,7 @@ export class PhotoDataService {
     if (data == null) {
       return null;
     }
-    return {...data};
+    return { ...data };
   }
   /**
    * Creates query string to get paginated list of album's photo
@@ -43,15 +45,20 @@ export class PhotoDataService {
    * @param page page
    * @param limit limit
    */
-  getPhotos(albumId, page, limit): Observable<Photo[]> {
-    if (page < 0) {
-      page = 0;
-    }
-    if (limit < 1) {
-      limit = 1;
-    }
-    return this.http.get<Photo[]>(`${this.config.getPhotosUrl()}?${PhotoDataService.createQueryString(albumId, page, limit)}`).pipe(
-      map((datas: any[]) => datas.map(data => PhotoDataService.createPhoto(data)))
-    );
+  getPhotos(albumId, page, limit): Observable<PaginatedList<Photo>> {
+    const photoUrl = this.config.getPhotosUrl();
+    const totalHeaderName = 'x-total-count';
+    return this.http.head(`${photoUrl}?${PhotoDataService.createQueryString(albumId, 0, 1)}`,
+      { observe: 'response' }).pipe(switchMap(response => {
+        const total = response.headers.get(totalHeaderName);
+        const { pageIndex, pageSize } = correctPaginationParams(page, limit, +total);
+        return this.http.get<Photo[]>(`${this.config.getPhotosUrl()}?${PhotoDataService.createQueryString(albumId, pageIndex, pageSize)}`,
+          { observe: 'response' }).pipe(
+            map((response: HttpResponse<Photo[]>) => {
+              const total = response.headers.get(totalHeaderName);
+              return createPaginatedList(response.body.map(data => PhotoDataService.createPhoto(data)), createPagination(pageIndex, pageSize, +total));
+            })
+          );
+      }));
   }
 }

@@ -7,8 +7,8 @@
     <h3 class="header">{{currentAlbum?.ownerName}}</h3>
     <h3 class="header">{{currentAlbum?.title}}</h3>
     <div class="list__container-center">
-      <mat-paginator class="list__paginator" [length]="pagination.rowsCount" [pageIndex]="pagination.pageIndex"
-        [pageSize]="pagination.pageSize" [pageSizeOptions]="pagination.pageSizeOptions" (page)="pageEvent($event)">
+      <mat-paginator class="list__paginator" [length]="pagination?.rowsCount" [pageIndex]="pagination?.pageIndex"
+        [pageSize]="pagination?.pageSize" [pageSizeOptions]="pagination?.pageSizeOptions" (page)="pageEvent($event)">
       </mat-paginator>
       <div class="list__container">
         <albvwr-photo *ngFor="let photo of photos" [photo]="photo" (photoClicked)="onPhotoClicked($event)">

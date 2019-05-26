@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Photo } from '../../models/photo.model';
+import { PaginatedList } from 'src/app/shared/models/paginated-list.model';
 
 export enum PhotoActionTypes {
     LOAD_PHOTOS = '[Albums] Load photos',
@@ -13,7 +14,7 @@ export class LoadPhotosAction implements Action {
 }
 export class LoadPhotosSuccessAction implements Action {
     readonly type = PhotoActionTypes.LOAD_PHOTOS_SUCCESS;
-    constructor(public photos: Photo[]) {
+    constructor(public photos: PaginatedList<Photo>) {
     }
 }
 export class LoadPhotosFailAction implements Action {

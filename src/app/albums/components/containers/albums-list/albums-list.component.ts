@@ -1,12 +1,12 @@
 import { Store } from '@ngrx/store';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AlbumState } from '../../../store/reducers';
-import { LoadAlbumsAction } from '../../../store/actions';
 import { getAlbums, getIsAlbumsLoaing } from '../../../store/selectors';
 import { Subscription } from 'rxjs';
 import { AlbumViewModel } from '../../../view-models/album.view-model';
 import { PageEvent } from '@angular/material';
-import { Pagination, getDefaultPagination } from 'src/app/albums/models/pagination.model';
+import { Router, ActivatedRoute } from '@angular/router';
+import { PaginatedList, createPaginatedList } from 'src/app/shared/models/paginated-list.model';
 
 /**
  * Component to show list of albums
@@ -17,32 +17,37 @@ import { Pagination, getDefaultPagination } from 'src/app/albums/models/paginati
   styleUrls: ['./albums-list.component.scss']
 })
 export class AlbumsListComponent implements OnInit, OnDestroy {
-  /**
-   * Pagination object
-   */
-  pagination: Pagination;
+
+  private _paginatedAlbums: PaginatedList<AlbumViewModel> = createPaginatedList([]);
   /**
    * Albums to show
    */
-  albums: AlbumViewModel[] = [];
+  get albums() {
+    return this._paginatedAlbums.items;
+  }
+  /**
+   * Pagination object
+   */
+  get pagination() {
+    return this._paginatedAlbums.pagination;
+  }
   /**
    * If albums list is loading
    */
   isAlbumsLoading = false;
   private subsciptions: Subscription[] = [];
 
-  constructor(private store: Store<AlbumState>) {
-    this.pagination = getDefaultPagination();
+  constructor(private store: Store<AlbumState>, private router: Router, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.subsciptions.push(this.store.select(getAlbums).subscribe(albums => this.albums = albums));
+    this.subsciptions.push(this.store.select(getAlbums).subscribe(albums => this._paginatedAlbums = albums));
     this.subsciptions.push(this.store.select(getIsAlbumsLoaing).subscribe(isLoading => this.isAlbumsLoading = isLoading));
   }
   ngOnDestroy(): void {
     this.subsciptions.forEach(s => s.unsubscribe());
   }
   pageEvent(ev: PageEvent) {
-    this.store.dispatch(new LoadAlbumsAction(ev.pageIndex, ev.pageSize));
+    this.router.navigate(['./'], { relativeTo: this.route, queryParams: { page: ev.pageIndex + 1, limit: ev.pageSize } });
   }
 }

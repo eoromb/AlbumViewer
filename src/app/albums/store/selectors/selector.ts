@@ -3,6 +3,7 @@ import { ConfigState, getAlbumState } from '../reducers';
 import { AlbumViewModel, createAlbumViewModel } from '../../view-models/album.view-model';
 import { User } from '../../models/user.model';
 import { PhotoViewModel, createPhotoViewModel } from '../../view-models/photo.view-model';
+import { createPaginatedList, PaginatedList } from 'src/app/shared/models/paginated-list.model';
 
 const getPlaceHolderBaseUrl = (config?: ConfigState) => config != null ? config.placeHolderBaseUrl : null;
 
@@ -29,12 +30,12 @@ export const getConfig = createSelector(getAlbumState, state => state.config);
 /**
  * Gets album view models list
  */
-export const getAlbums = createSelector(getAlbumsRaw, getConfig, getUserIdUserMap, (albums, config, usersMap): AlbumViewModel[] => {
+export const getAlbums = createSelector(getAlbumsRaw, getConfig, getUserIdUserMap, (albums, config, usersMap): PaginatedList<AlbumViewModel> => {
     const placeHolderBaseUrl = getPlaceHolderBaseUrl(config);
-    return albums.map(album => {
+    return createPaginatedList(albums.items.map(album => {
         const user = usersMap.get(album.userId);
         return createAlbumViewModel(album, user, placeHolderBaseUrl);
-    });
+    }), albums.pagination);
 });
 /**
  * Gets photo models list
@@ -59,10 +60,8 @@ export const getCurrentAlbum = createSelector(getCurrentAlbumRaw, getConfig, get
 /**
  * Gets photo view models list
  */
-export const getPhotos = createSelector(getPhotosRaw, getCurrentAlbum, getUserIdUserMap, (photos, album, usersMap): PhotoViewModel[] => {
-    return photos.map(photo => {
-        return createPhotoViewModel(photo, album);
-    });
+export const getPhotos = createSelector(getPhotosRaw, getCurrentAlbum, (photos, album): PaginatedList<PhotoViewModel> => {
+    return createPaginatedList(photos.items.map(photo => createPhotoViewModel(photo, album)), photos.pagination);
 });
 /**
  * Gets if photos is loading

@@ -6,6 +6,7 @@ import {
   PhotoActionTypes
 } from '../actions';
 import { createFeatureSelector } from '@ngrx/store';
+import { PaginatedList, createPaginatedList } from 'src/app/shared/models/paginated-list.model';
 
 /**
  * Configuration state
@@ -18,8 +19,8 @@ export interface ConfigState {
  */
 export interface AlbumState {
   users: User[];
-  albums: Album[];
-  photos: Photo[];
+  albums: PaginatedList<Album>;
+  photos: PaginatedList<Photo>;
   currentAlbum?: Album;
   config: ConfigState;
   isAlbumsLoading: boolean;
@@ -27,8 +28,8 @@ export interface AlbumState {
 }
 export const initialAlbumState: AlbumState = {
   users: [],
-  albums: [],
-  photos: [],
+  albums: createPaginatedList([]),
+  photos: createPaginatedList([]),
   currentAlbum: null,
   config: null,
   isAlbumsLoading: false,
@@ -44,7 +45,7 @@ export const initialAlbumState: AlbumState = {
 export function reducer(state: AlbumState = initialAlbumState, action) {
   switch (action.type) {
     case AlbumActionTypes.SET_CURRENT_ALBUM_SUCCESS:
-      return { ...state, currentAlbum: action.album, photos: action.album == null ? [] : state.photos };
+      return { ...state, currentAlbum: action.album, photos: action.album == null ? createPaginatedList([]) : state.photos };
     case AlbumActionTypes.LOAD_ALBUMS:
       return { ...state, isAlbumsLoading: true };
     case AlbumActionTypes.LOAD_ALBUMS_SUCCESS:
@@ -58,7 +59,7 @@ export function reducer(state: AlbumState = initialAlbumState, action) {
     case PhotoActionTypes.LOAD_PHOTOS_SUCCESS:
       return { ...state, photos: action.photos, isPhotosLoading: false };
     case PhotoActionTypes.LOAD_PHOTOS_FAIL:
-      return { ...state, photos: [], isPhotosLoading: false };
+      return { ...state, photos: createPaginatedList([]), isPhotosLoading: false };
     case UserActionTypes.LOAD_ALL_USERS_SUCCESS:
       return { ...state, users: action.users };
     default:

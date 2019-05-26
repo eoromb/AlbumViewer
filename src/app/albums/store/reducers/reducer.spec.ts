@@ -4,13 +4,14 @@ import {
     LoadPhotosFailAction, SetCurrentAlbumSuccessAction, LoadConfigSuccessAction
 } from '../actions';
 import { Album } from '../../models/album.model';
-import { getDefaultPagination } from '../../models/pagination.model';
+import { createPagination } from 'src/app/shared/models/pagination.model';
 import { Photo } from '../../models/photo.model';
+import { createPaginatedList } from 'src/app/shared/models/paginated-list.model';
 
 const album = { id: 1, title: 'title' } as Album;
-const albums = [album];
-const photos = [{ id: 1, albumId: 1, title: 'title' } as Photo];
-const pagination = getDefaultPagination();
+const albums = createPaginatedList([album]);
+const photos = createPaginatedList([{ id: 1, albumId: 1, title: 'title' } as Photo]);
+const pagination = createPagination();
 const placeHolderUrl = 'someUrl';
 
 /**
@@ -37,7 +38,7 @@ describe('Reducer', () => {
         });
         it('should reset isAlbumLoading on LoadAlbumSuccessAction', () => {
             let state = fromReducers.reducer(undefined, new LoadAlbumsAction(pagination.pageIndex, pagination.pageSize));
-            state = fromReducers.reducer(state, new LoadAlbumsSuccessAction([]));
+            state = fromReducers.reducer(state, new LoadAlbumsSuccessAction(createPaginatedList([])));
             expect(state.isAlbumsLoading).toBe(false);
         });
         it('should reset isAlbumLoading on LoadAlbumFailAction', () => {
@@ -64,7 +65,7 @@ describe('Reducer', () => {
         });
         it('should reset isPhotoLoading on LoadPhotoSuccessAction', () => {
             let state = fromReducers.reducer(undefined, new LoadPhotosAction(pagination.pageIndex, pagination.pageSize));
-            state = fromReducers.reducer(state, new LoadPhotosSuccessAction([]));
+            state = fromReducers.reducer(state, new LoadPhotosSuccessAction(createPaginatedList([])));
             expect(state.isPhotosLoading).toBe(false);
         });
         it('should reset isPhotoLoading on LoadPhotoFailAction', () => {

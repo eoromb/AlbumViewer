@@ -4,8 +4,8 @@
     <mat-spinner></mat-spinner>
   </div>
   <div class="list__container-center">
-    <mat-paginator class="list__paginator" [length]="pagination.rowsCount" [pageIndex]="pagination.pageIndex"
-      [pageSize]="pagination.pageSize" [pageSizeOptions]="pagination.pageSizeOptions" (page)="pageEvent($event)">
+    <mat-paginator class="list__paginator" [length]="pagination?.rowsCount" [pageIndex]="pagination?.pageIndex"
+      [pageSize]="pagination?.pageSize" [pageSizeOptions]="pagination?.pageSizeOptions" (page)="pageEvent($event)">
     </mat-paginator>
     <div class="list__container">
       <albvwr-album *ngFor="let album of albums" [album]="album">

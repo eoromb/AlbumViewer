@@ -11,18 +11,17 @@ describe('AlbumDataService', () => {
     let service: AlbumDataService;
     let configService: ConfigService;
     const page = 1;
-    const limit = 25;
+    const limit = 20;
     const albumsUrl = 'url';
     const album: Album = { id: 1, title: 'aaa' } as Album;
     const albums: Album[] = [album];
     let httpClient: HttpClient;
 
     beforeEach(() => {
-        const headers = new HttpHeaders();
-        headers.set('x-total-count', '100');
+        const headers = new HttpHeaders({'x-total-count':'100'});
         const httpResponse = new HttpResponse({body: albums, headers});
         configService = jasmine.createSpyObj('ConfigService', { getAlbumsUrl: albumsUrl });
-        httpClient = jasmine.createSpyObj('HttpClient', { get: of(httpResponse) });
+        httpClient = jasmine.createSpyObj('HttpClient', { get: of(httpResponse), head: of(httpResponse) });
         service = new AlbumDataService(httpClient, configService);
     });
 
@@ -36,7 +35,7 @@ describe('AlbumDataService', () => {
     });
     it('should call get paginated album list endpoint', () => {
         const sub = service.getAlbums(page, limit).subscribe(data => {
-            expect(data).toEqual(albums);
+            expect(data.items).toEqual(albums);
         });
         expect(httpClient.get).toHaveBeenCalledWith(`${albumsUrl}?_start=${limit * page}&_limit=${limit}`, {observe: 'response'});
         sub.unsubscribe();
@@ -45,7 +44,7 @@ describe('AlbumDataService', () => {
         const sub = service.getAlbumById(album.id).subscribe(data => {
             expect(data).toEqual(album);
         });
-        expect(httpClient.get).toHaveBeenCalledWith(`${albumsUrl}?id=${album.id}`);
+        expect(httpClient.get).toHaveBeenCalledWith(`${albumsUrl}?id=${album.id}`, {observe: 'response'});
         sub.unsubscribe();
     });
 });

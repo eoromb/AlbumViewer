@@ -27,14 +27,14 @@ describe('Selector', () => {
         });
     });
     describe('Album', () => {
-        it('shoudl select albums', () => {
+        it('should select albums', () => {
             expect(getAlbumsRaw(featureState)).toEqual(TestData.albums);
         });
     });
     describe('Album view model', () => {
         let albumViewModel: AlbumViewModel;
         beforeAll(() => {
-            const albumsViewModels = getAlbums(featureState);
+            const albumsViewModels = getAlbums(featureState).items;
             expect(albumsViewModels.length).toBe(1);
             albumViewModel = albumsViewModels[0];
         });
@@ -48,7 +48,7 @@ describe('Selector', () => {
     describe('Photo view model', () => {
         let photoViewModel: PhotoViewModel;
         beforeAll(() => {
-            const photosViewModels = getPhotos(featureState);
+            const photosViewModels = getPhotos(featureState).items;
             expect(photosViewModels.length).toBe(1);
             photoViewModel = photosViewModels[0];
         });
