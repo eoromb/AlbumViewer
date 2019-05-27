@@ -1,3 +1,17 @@
 .header {
   text-align: center;
 }
+.container {
+  padding: 20px;
+  border: 2px solid grey;
+  border-radius: 10px;
+  background: white;
+  box-shadow: 5px 5px 5px 0 rgba(0, 0, 0, 0.3);
+}
+.title__main {
+  font-weight: bold;
+  font-size: 125%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

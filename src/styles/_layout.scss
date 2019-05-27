@@ -1,18 +1,12 @@
 @import "./variables";
 
 .list__container-center {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+  padding: $base-padding;
 }
 .list__container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 150px));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   grid-gap: $base-margin;
-  align-items: end;
-  width: $base-width;
 }
 .list__paginator {
   width: $base-width;

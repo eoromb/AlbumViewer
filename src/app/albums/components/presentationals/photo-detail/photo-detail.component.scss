@@ -6,12 +6,14 @@
   align-items: stretch;
 }
 .photo-detail__owner {
+  @extend .title__main;
   grid-row: 1;
   align-self: center;
 }
 .photo-detail__album {
   grid-row: 2;
   align-self: center;
+  font-weight: bold;
 }
 .photo-detail__title {
   grid-row: 3;

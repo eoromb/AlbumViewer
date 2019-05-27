@@ -1,6 +1,6 @@
 @import "~src/styles/base";
-
 .photo__button {
+  min-width: 100%;
   background: none;
   border: none;
 }
@@ -9,16 +9,18 @@
   outline: none;
 }
 .photo__container {
+  @extend .container;
   display: grid;
-  grid-template-rows: repeat(2, minmax(max-content, max-content));
-  align-items: stretch;
+  grid-template:
+    " thumbnail title" minmax(150px, 1fr)
+    / 150px minmax(0, 1fr);
 }
 .photo__title {
-  grid-row: 1;
+  grid-area: title;
   align-self: center;
 }
 .photo__thumbnail {
-  grid-row: 2;
-  align-self: end;
+  grid-area: thumbnail;
+  object-fit: cover;
 }
 
