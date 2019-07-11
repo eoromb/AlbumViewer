@@ -1,4 +1,29 @@
-##Docker deployment
+## Description
+
+Simple SPA to consume JSONPlaceholder Album API. <br/> 
+Has 3 pages:
+* Albums page
+    * Displays albums in a grid
+    * Uses different image placeholder color for each user
+    * Displays title and user's name of album's owner
+    * Supports server side pagination
+* Photo page
+    * Displays a page title consisting of album's owner and album's title
+    * Displays the photos in a grid
+    * Displays the title of the photo
+    * Supports server side pagination of the photo thumbnails
+* Photo detail modal
+    * Displays the photo in full size
+    * Displays the photo's owner, album and title
+
+## Tech summary
+
+* Angular + NgRx + CSS Grid + Material design
+* Jasmine for testing
+* Compodoc for documenting
+* Docker for deployment
+
+## Docker deployment
 
 1) Build image using `docker build -t albumviewer:1.0.0 -f nginx.dockerfile .` <br/>
 2) Run image using `docker run -d -p 8080:80 albumviewer:1.0.0` <br/>
